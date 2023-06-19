@@ -76,7 +76,7 @@ const Signup = () => {
         title: "Error Occured!",
         description: error.response.data.message,
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: "bottom",
       });
