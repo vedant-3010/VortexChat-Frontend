@@ -24,6 +24,7 @@ const Signup = () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
+        
         title: "Please Fill all the Feilds",
         status: "warning",
         duration: 5000,
