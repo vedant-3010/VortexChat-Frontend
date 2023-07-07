@@ -36,7 +36,7 @@ const HomePage = () => {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans">
-          Chat app
+          Vorte-X Chat
         </Text>
       </Box>
 
