@@ -2,9 +2,9 @@ import { Box } from "@chakra-ui/layout";
 import "./styles.css";
 import SingleChat from "./SingleChat";
 import { ChatState } from "../context/ChatProvider";
-import { set } from "mongoose";
-const ChatBox = ({fetchAgain,setFetchAgain}) => {
-  const { user, selectedChat } = ChatState();
+
+const Chatbox = ({ fetchAgain, setFetchAgain }) => {
+  const { selectedChat } = ChatState();
 
   return (
     <Box
@@ -17,9 +17,9 @@ const ChatBox = ({fetchAgain,setFetchAgain}) => {
       borderRadius="lg"
       borderWidth="1px"
     >
-      <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>
+      <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     </Box>
   );
 };
 
-export default ChatBox;
+export default Chatbox;

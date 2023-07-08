@@ -1,43 +1,56 @@
+import { Button } from "@chakra-ui/button";
+import { useDisclosure } from "@chakra-ui/hooks";
+import { Input } from "@chakra-ui/input";
+import { Box, Text } from "@chakra-ui/layout";
 import {
-  Avatar,
-  Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  Input,
   Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
   MenuList,
-  Spinner,
-  Text,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
-import { BellIcon, SearchIcon } from "@chakra-ui/icons";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import { ChatState } from "../../context/ChatProvider";
-import ProfileModal from "./ProfileModal";
+} from "@chakra-ui/menu";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+} from "@chakra-ui/modal";
+import { Tooltip } from "@chakra-ui/tooltip";
+import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { Avatar } from "@chakra-ui/avatar";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
+import { useToast } from "@chakra-ui/toast";
 import ChatLoading from "../ChatLoading";
+import { Spinner } from "@chakra-ui/spinner";
+import ProfileModal from "./ProfileModal";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
+import { getSender } from "../../config/ChatLogics";
 import UserListItem from "../userAvatar/UserListItem";
-const SideDrawer = () => {
+import { ChatState } from "../../context/ChatProvider";
+
+function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const { setSelectedChat, user, chats, setChats } = ChatState();
+  const {
+    setSelectedChat,
+    user,
+    notification,
+    setNotification,
+    chats,
+    setChats,
+  } = ChatState();
+
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const history = useHistory();
+
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
@@ -79,6 +92,7 @@ const SideDrawer = () => {
       });
     }
   };
+
   const accessChat = async (userId) => {
     console.log(userId);
 
@@ -119,37 +133,56 @@ const SideDrawer = () => {
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
-        <Button variant="outline" onClick={onOpen}>
-          <SearchIcon />
-          <Text display={{ base: "none", md: "flex" }} px="4">
-            Search user
-          </Text>
-        </Button>
-
+        <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+          <Button variant="ghost" onClick={onOpen}>
+            <i className="fas fa-search"></i>
+            <Text display={{ base: "none", md: "flex" }} px={4}>
+              Search User
+            </Text>
+          </Button>
+        </Tooltip>
         <Text fontSize="2xl" fontFamily="Work sans">
-          Vorte-X Chat
+          Talk-A-Tive
         </Text>
-
         <div>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize="2xl" m={1} />
             </MenuButton>
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronRightIcon />}>
+            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
               <Avatar
                 size="sm"
                 cursor="pointer"
                 name={user.name}
                 src={user.pic}
-              ></Avatar>
+              />
             </MenuButton>
             <MenuList>
               <ProfileModal user={user}>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>My Profile</MenuItem>{" "}
               </ProfileModal>
-
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
@@ -182,12 +215,12 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
   );
-};
+}
 
 export default SideDrawer;
