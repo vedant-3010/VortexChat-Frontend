@@ -30,6 +30,7 @@ const HomePage = () => {
         justifyContent="center"
         p={3}
         bg="white"
+        opacity="0.7"
         w="100%"
         m="40px 0 15px 0"
         borderRadius="lg"
@@ -42,6 +43,8 @@ const HomePage = () => {
 
       <Box
         bg={"white"}
+        opacity={"0.9"}
+        blur="3px"
         w={"100%"}
         p={4}
         borderRadius={"lg"}
