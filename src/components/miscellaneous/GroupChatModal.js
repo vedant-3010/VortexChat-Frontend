@@ -15,10 +15,9 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { ChatState } from "../../context/ChatProvider";
+import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
-import React from "react";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,7 +28,22 @@ const GroupChatModal = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
-  const { user, setChats, chats } = ChatState();
+  const { user, chats, setChats } = ChatState();
+
+  const handleGroup = (userToAdd) => {
+    if (selectedUsers.includes(userToAdd)) {
+      toast({
+        title: "User already added",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
+
+    setSelectedUsers([...selectedUsers, userToAdd]);
+  };
 
   const handleSearch = async (query) => {
     setSearch(query);
@@ -59,34 +73,9 @@ const GroupChatModal = ({ children }) => {
       });
     }
   };
-  const handleGroup = (userToAdd) => {
-    if (selectedUsers.includes(userToAdd)) {
-      toast({
-        title: "User Already Added!",
-        description: "Please Select Another User",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "top-left",
-      });
-      return;
-    } else {
-      setSelectedUsers([...selectedUsers, userToAdd]);
-      toast({
-        title: "User Added!",
-        description: "User Added to the Group",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "top-left",
-      });
-    }
-  };
 
   const handleDelete = (delUser) => {
-    setSelectedUsers(
-        selectedUsers.filter((u) => u !== delUser)
-        );
+    setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
   };
 
   const handleSubmit = async () => {
@@ -146,13 +135,13 @@ const GroupChatModal = ({ children }) => {
           <ModalHeader
             fontSize="35px"
             fontFamily="Work sans"
-            d="flex"
+            display="flex"
             justifyContent="center"
           >
             Create Group Chat
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody d="flex" flexDir="column" alignItems="center">
+          <ModalBody display="flex" flexDir="column" alignItems="center">
             <FormControl>
               <Input
                 placeholder="Chat Name"
@@ -167,7 +156,7 @@ const GroupChatModal = ({ children }) => {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>
-            <Box w="100%" d="flex" flexWrap="wrap">
+            <Box w="100%" display="flex" flexWrap="wrap">
               {selectedUsers.map((u) => (
                 <UserBadgeItem
                   key={u._id}

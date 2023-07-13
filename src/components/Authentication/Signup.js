@@ -24,7 +24,6 @@ const Signup = () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
-        
         title: "Please Fill all the Feilds",
         status: "warning",
         duration: 5000,
@@ -101,9 +100,9 @@ const Signup = () => {
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
-      data.append("upload_preset", "chatapp");
-      data.append("cloud_name", "didf67ktw");
-      fetch("https://api.cloudinary.com/v1_1/didf67ktw/image/upload/", {
+      data.append("upload_preset", "chat-app");
+      data.append("cloud_name", "piyushproj");
+      fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
         method: "post",
         body: data,
       })
@@ -192,7 +191,6 @@ const Signup = () => {
         style={{ marginTop: 15 }}
         onClick={submitHandler}
         isLoading={picLoading}
-
       >
         Sign Up
       </Button>

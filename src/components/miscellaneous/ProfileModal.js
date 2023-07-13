@@ -1,17 +1,17 @@
 import { ViewIcon } from "@chakra-ui/icons";
 import {
-  Button,
-  IconButton,
   Modal,
-  useDisclosure,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   ModalFooter,
-  Image,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  IconButton,
   Text,
+  Image,
 } from "@chakra-ui/react";
 
 const ProfileModal = ({ user, children }) => {
@@ -22,14 +22,9 @@ const ProfileModal = ({ user, children }) => {
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton
-          display={{ base: "flex" }}
-          icon={<ViewIcon />}
-          onClick={onOpen}
-        />
+        <IconButton display={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
       )}
-
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent h="410px">
           <ModalHeader
@@ -49,22 +44,19 @@ const ProfileModal = ({ user, children }) => {
           >
             <Image
               borderRadius="full"
-              boxSize="120px"
+              boxSize="150px"
               src={user.pic}
               alt={user.name}
             />
             <Text
-              fontSize={{ base: "20px", md: "22px" }}
+              fontSize={{ base: "28px", md: "30px" }}
               fontFamily="Work sans"
             >
               Email: {user.email}
             </Text>
           </ModalBody>
-
-          <ModalFooter display="flex" justifyContent="center">
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
+          <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

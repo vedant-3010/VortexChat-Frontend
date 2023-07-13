@@ -75,7 +75,6 @@ const Login = () => {
         <FormLabel>Email Address</FormLabel>
         <Input
           value={email}
-          
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}

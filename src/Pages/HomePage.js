@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
-
 import {
   Box,
   Container,
-  Flex,
   Tab,
   TabList,
   TabPanel,
@@ -11,15 +8,17 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useHistory } from "react-router";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
-import { useHistory } from "react-router-dom";
 
-const HomePage = () => {
+function Homepage() {
   const history = useHistory();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
+
     if (user) history.push("/chats");
   }, [history]);
 
@@ -30,26 +29,16 @@ const HomePage = () => {
         justifyContent="center"
         p={3}
         bg="white"
-        opacity="0.7"
         w="100%"
         m="40px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans">
-          Vorte-X Chat
+          Talk-A-Tive
         </Text>
       </Box>
-
-      <Box
-        bg={"white"}
-        opacity={"0.9"}
-        blur="3px"
-        w={"100%"}
-        p={4}
-        borderRadius={"lg"}
-        borderWidth={"1px"}
-      >
+      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
         <Tabs isFitted variant="soft-rounded">
           <TabList mb="1em">
             <Tab>Login</Tab>
@@ -67,6 +56,6 @@ const HomePage = () => {
       </Box>
     </Container>
   );
-};
+}
 
-export default HomePage;
+export default Homepage;
